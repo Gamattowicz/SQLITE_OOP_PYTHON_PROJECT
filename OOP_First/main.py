@@ -16,7 +16,12 @@ class Database:
     def create_table(self, sql: str):
         self.cursor.execute(sql)
         self.connection.commit()
-             
+    
+    def insert(self, table, *values):
+        self.cursor.execute(f"INSERT INTO {table} VALUES ({','.join(['?' for _ in values])})", values)
+        self.connection.commit()
+        
+                 
 if len(argv) > 1 and argv[1] == 'setup':
     print('Create table in database')
     db = Database(getenv('DB_NAME'))
@@ -24,3 +29,10 @@ if len(argv) > 1 and argv[1] == 'setup':
     
 
 print(getenv('DB_NAME'))
+
+if len(argv) == 4 and argv[1] == 'add':
+    print('Add new adress url')
+    category = argv[2]
+    url = argv[3]
+    db = Database(getenv('DB_NAME'))
+    db.insert('urls', None, category, url)
