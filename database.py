@@ -12,11 +12,13 @@ class Database:
     def create_table(self, sql: str):
         self.cursor.execute(sql)
         self.connection.commit()
-    
+
     def insert(self, table, *values):
-        self.cursor.execute(f"INSERT INTO {table} VALUES ({','.join(['?' for _ in values])})", values)
+        self.cursor.execute(
+            f"INSERT INTO {table} VALUES ({','.join(['?' for _ in values])})", values
+        )
         self.connection.commit()
-        
+
     def fetch_all(self, table, **conditions):
         values = conditions.values()
         query = self.cursor.execute(
@@ -24,7 +26,7 @@ class Database:
             list(values),
         )
         return query.fetchall()
-    
+
     def fetch_distinct(self, column, table):
-        query = self.cursor.execute(f'SELECT DISTINCT {column} FROM {table}')
+        query = self.cursor.execute(f"SELECT DISTINCT {column} FROM {table}")
         return query.fetchall()
