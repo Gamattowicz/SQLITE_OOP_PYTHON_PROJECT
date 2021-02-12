@@ -24,3 +24,7 @@ class Database:
             list(values),
         )
         return query.fetchall()
+    
+    def fetch_distinct(self, column, table):
+        query = self.cursor.execute(f'SELECT DISTINCT {column} FROM {table}')
+        return query.fetchall()
